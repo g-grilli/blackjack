@@ -1,58 +1,8 @@
-var kingOfHearts = {point: 13, suit: 'hearts'};
-var queenOfHearts = {point: 12, suit: 'hearts'};
-var jackOfHearts = {point: 11, suit: 'hearts'};
-var tenOfHearts = {point: 10, suit: 'hearts'};
-var nineOfHearts = {point: 9, suit: 'hearts'};
-var eightOfHearts = {point: 8, suit: 'hearts'};
-var sevenOfHearts = {point: 7, suit: 'hearts'};
-var sixOfHearts = {point: 6, suit: 'hearts'};
-var fiveOfHearts = {point: 5, suit: 'hearts'};
-var fourOfHearts = {point: 4, suit: 'hearts'};
-var threeOfHearts = {point: 3, suit: 'hearts'};
-var twoOfHearts = {point: 2, suit: 'hearts'};
-var aceOfHearts = {point: 1, suit: 'hearts'};
-var kingOfSpades = {point: 13, suit: 'spades'};
-var queenOfSpades = {point: 12, suit: 'spades'};
-var jackOfSpades = {point: 11, suit: 'spades'};
-var tenOfSpades = {point: 10, suit: 'spades'};
-var nineOfSpades = {point: 9, suit: 'spades'};
-var eightOfSpades = {point: 8, suit: 'spades'};
-var sevenOfSpades = {point: 7, suit: 'spades'};
-var sixOfSpades = {point: 6, suit: 'spades'};
-var fiveOfSpades = {point: 5, suit: 'spades'};
-var fourOfSpades = {point: 4, suit: 'spades'};
-var threeOfSpades = {point: 3, suit: 'spades'};
-var twoOfSpades = {point: 2, suit: 'spades'};
-var aceOfSpades = {point: 1, suit: 'spades'};
-var kingOfDiamonds = {point: 13, suit: 'diamonds'};
-var queenOfDiamonds = {point: 12, suit: 'diamonds'};
-var jackOfDiamonds = {point: 11, suit: 'diamonds'};
-var tenOfDiamonds = {point: 10, suit: 'diamonds'};
-var nineOfDiamonds = {point: 9, suit: 'diamonds'};
-var eightOfDiamonds = {point: 8, suit: 'diamonds'};
-var sevenOfDiamonds = {point: 7, suit: 'diamonds'};
-var sixOfDiamonds = {point: 6, suit: 'diamonds'};
-var fiveOfDiamonds = {point: 5, suit: 'diamonds'};
-var fourOfDiamonds = {point: 4, suit: 'diamonds'};
-var threeOfDiamonds = {point: 3, suit: 'diamonds'};
-var twoOfDiamonds = {point: 2, suit: 'diamonds'};
-var aceOfDiamonds = {point: 1, suit: 'diamonds'};
-var kingOfClubs = {point: 13, suit: 'clubs'};
-var queenOfClubs = {point: 12, suit: 'clubs'};
-var jackOfClubs = {point: 11, suit: 'clubs'};
-var tenOfClubs = {point: 10, suit: 'clubs'};
-var nineOfClubs = {point: 9, suit: 'clubs'};
-var eightOfClubs = {point: 8, suit: 'clubs'};
-var sevenOfClubs = {point: 7, suit: 'clubs'};
-var sixOfClubs = {point: 6, suit: 'clubs'};
-var fiveOfClubs = {point: 5, suit: 'clubs'};
-var fourOfClubs = {point: 4, suit: 'clubs'};
-var threeOfClubs = {point: 3, suit: 'clubs'};
-var twoOfClubs = {point: 2, suit: 'clubs'};
-var aceOfClubs = {point: 1, suit: 'clubs'};
-
-var deck = [
-{ point: 13, suit: 'hearts' },
+$(document).ready(function() {
+	$('#play-again').hide();
+ });   
+count = 0;
+var deck = [{ point: 13, suit: 'hearts' },
 { point: 12, suit: 'hearts' },
 { point: 11, suit: 'hearts' },
 { point: 10, suit: 'hearts' },
@@ -86,7 +36,7 @@ var deck = [
 { point: 8, suit: 'diamonds' },
 { point: 7, suit: 'diamonds' },
 { point: 6, suit: 'diamonds' },
-{ point: 5, suit: 'diamonds' },,
+{ point: 5, suit: 'diamonds' },
 { point: 4, suit: 'diamonds' },
 { point: 3, suit: 'diamonds' },
 { point: 2, suit: 'diamonds' },
@@ -105,7 +55,143 @@ var deck = [
 { point: 2, suit: 'clubs' },
 { point: 1, suit: 'clubs' }
 ];
+playerTotal = [];
+dealerTotal = [];
+function shuffleArray(array) {
+	for (var i = array.length - 1; i > 0; i--) {
+    	var j = Math.floor(Math.random() * (i + 1));
+    	var temp = array[i];
+    	array[i] = array[j];
+    	array[j] = temp;
+		}
+	return array;
+ }
 
-var playerDeal = deck.slice()
+ function deal() {
+ 	var playerHand = [];
+ 	var cardOne = deck.pop();
+ 	playerHand.push(cardOne);
+ 	return playerHand;
+ }
+
+ function getCardImageUrl(cardOne) {
+	 console.log(cardOne);
+	 var pname = cardOne.point;
+	 if (pname == 1) {
+	 	pname = 'ace';
+	 }
+	 if (pname == 13) {
+	 	pname = 'king';
+	 }
+	 if (pname == 12) {
+	 	pname = 'queen';
+	 }
+	 if (pname == 11) {
+	 	pname = 'jack';
+	 }
+	 var pic = "<img src='static/" + pname + "_of_" + cardOne.suit + ".png'>";
+	 return pic;
+}
+function playerPoints(cardOne) {
+	console.log(cardOne);
+	var points = Number(cardOne.point);
+	if (points > 10) {
+		points = 10;
+	}
+	return points;
+}
+
+
+function dealerPoints(cardOne) {
+	console.log(cardOne);
+	var points = Number(cardOne.point);
+	if (points > 10) {
+		points = 10;
+	}
+	return points;
+}
+
+/* DEAL BUTTON */
+$('#deal-button').click(function () {
+   deck = shuffleArray(deck);
+   pRunningTotal = 0;
+   dRunningTotal = 0;
+   var pHandOne = deal();
+   var pT1 = playerPoints(pHandOne[0]);
+   var pPicOne = getCardImageUrl(pHandOne[0]);
+   var pHandTwo = deal();
+   var pT2 = playerPoints(pHandTwo[0]);
+   var pPicTwo = getCardImageUrl(pHandTwo[0]);
+   var dHandOne = deal();
+   var dT1 = dealerPoints(dHandOne[0]);
+   var dPicOne = getCardImageUrl(dHandOne[0]);
+   var dHandTwo = deal();
+   var dT2 = dealerPoints(dHandTwo[0]);
+   var dPicTwo = getCardImageUrl(dHandTwo[0]);
+   pRunningTotal = pT1 + pT2;
+   dRunningTotal = dT1 + dT2;
+   $("#player-hand").append(pPicOne,pPicTwo);
+   $("#player-points").text(pRunningTotal);
+   $("#dealer-hand").append(dPicOne,dPicTwo);
+   $("#dealer-points").text(dRunningTotal);
+   $('#messages').text("Would like to HIT or STAND?")
+});
+
+/* HIT BUTTON */
+$('#hit-button').click(function () {
+	$('#messages').text("Player Hits!")
+	if (pRunningTotal <= 21) {
+	 	pHandOne = deal();
+	    pT1 = playerPoints(pHandOne[0]);
+	    pPicOne = getCardImageUrl(pHandOne[0]);
+	    pRunningTotal = pRunningTotal + pT1;
+	    console.log(pRunningTotal, pT1, pHandOne);
+	    $("#player-hand").append(pPicOne);
+	    if (pRunningTotal <= 21){
+	    	$("#player-points").text(pRunningTotal);
+	    	$('#messages').append(" Would you like to HIT or STAND? ")
+	    }
+	    else {
+	    	$("#player-points").text("BUSTED WITH " + pRunningTotal);
+	    }
+	}
+ });
+/* STAND BUTTON */
+
+$('#stand-button').click(function () { 
+ 	while (dRunningTotal < pRunningTotal && dRunningTotal < 21) {
+	 	var dHandOne = deal();
+	 	var dT1 = dealerPoints(dHandOne[0]);
+	    var dPicOne = getCardImageUrl(dHandOne[0]);
+	    dRunningTotal = dT1 + dRunningTotal;
+    	$("#dealer-hand").append(dPicOne);
+    	if (dRunningTotal <= 21) {
+    		$("#dealer-points").text(dRunningTotal);
+    	}
+    	else {
+    		$("#dealer-points").text("DEALER BUSTED WITH " + dRunningTotal);
+    	}
+ 	}
+ });
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
